@@ -18,8 +18,8 @@ class Calculadora:
         self.frame_botoes = Frame(self.frame_principal, bg="#686868") # Frame onde será alocado todos os botões necessários para aplicação.
 
         self.botao_limpar_tudo =         Button(self.frame_botoes, text="AC", font=("Roboto", 35), command= lambda: limpaTela())
-        self.botao_parenteses_esquerdo = Button(self.frame_botoes, text="(", font=("Roboto", 35))
-        self.botao_parenteses_direita =  Button(self.frame_botoes, text=")", font=("Roboto", 35))
+        self.botao_parenteses_esquerdo = Button(self.frame_botoes, text="(", font=("Roboto", 35), command= lambda: capturaParenteses("("))
+        self.botao_parenteses_direita =  Button(self.frame_botoes, text=")", font=("Roboto", 35), command= lambda: capturaParenteses(")"))
         self.botao_apagar =              Button(self.frame_botoes, text="<-", font=("Roboto", 35), command=lambda: apagarUltimoDigito())
         self.botao_somar =               Button(self.frame_botoes, text="+", font=("Roboto", 40), command= lambda: capturaOperador("+"))
         self.botao_subtrair =            Button(self.frame_botoes, text="-", font=("Roboto", 40), command= lambda: capturaOperador("-"))
@@ -99,3 +99,19 @@ class Calculadora:
                     else:
                         self.textoTela.set(self.textoTela.get()[:-1] + operacao) # ...Caso, haja um sinal, este é substituído pelo novo operando.
             
+        def capturaParenteses(parentese):
+            if parentese == "(": # Se for um parẽntese direito
+                self.textoTela.set(self.textoTela.get() + parentese)
+
+            else: # Caso seja um parêntese esquerdo
+
+                contadorParenteses = 0 # Variável a ser usado na contagem de parênteses
+
+                for caractere in self.textoTela.get(): # Analisa cada cartere da string...
+                    if caractere == "(": # Para cada parêntese direito, será somado 1.
+                        contadorParenteses += 1
+                    if caractere == ")": # Se haver um parêntese esquerdo, será subtraído 1 fechando assim 1 par de parênteses.
+                        contadorParenteses -= 1
+
+                if contadorParenteses != 0: # Se haver uma quantidade de parênteses a serem fechados, então será feito.
+                    self.textoTela.set(self.textoTela.get() + parentese)
